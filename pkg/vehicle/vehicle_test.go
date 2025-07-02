@@ -19,3 +19,13 @@ func TestVehicleStruct(t *testing.T) {
 	assert.False(t, v.IsHandicap)
 	assert.Equal(t, "Small", v.Size)
 }
+
+func TestNewVehicle(t *testing.T) {
+	car := New("DL-1234", "White", "BMW", false, "Small")
+	assert.NotNil(t, car)
+	assert.Equal(t, "DL-1234", car.Plate)
+	assert.Equal(t, "White", car.Color)
+	assert.Equal(t, "BMW", car.Make)
+	assert.False(t, car.IsHandicap)
+	assert.Equal(t, "Small", car.Size)
+}
