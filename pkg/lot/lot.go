@@ -11,3 +11,11 @@ type ParkingLot struct {
 	Capacity int
 	Vehicles map[string]ParkedVehicle
 }
+
+func NewParkingLot(name string, cap int, vehicles map[string]ParkedVehicle) *ParkingLot {
+	return &ParkingLot{
+		Name:     name,
+		Capacity: cap,
+		Vehicles: vehicles,
+	}
+}
