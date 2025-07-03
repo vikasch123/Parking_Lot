@@ -33,3 +33,12 @@ func (p *ParkingLot) Park(v vehicle.Vehicle) (bool,error){
 	}
 	return true, nil
 }
+
+func (p *ParkingLot) Unpark(plate string) (vehicle.Vehicle, error) {
+	parked, exists := p.Vehicles[plate]
+	if !exists {
+		return vehicle.Vehicle{}, errors.New("vehicle not found")
+	}
+	delete(p.Vehicles, plate)
+	return parked.Vehicle, nil
+}

@@ -31,3 +31,12 @@ func TestParkCar_Success(t *testing.T) {
 	assert.True(t, ok)
 	assert.Nil(t, err)
 }
+
+func TestUnparkCar_Success(t *testing.T) {
+	lot := NewParkingLot("Lot A", 2, make(map[string]ParkedVehicle))
+	car := vehicle.New("DL-1234", "White", "BMW", false, "Small")
+	_, _ = lot.Park(*car)
+	unparkedCar, err := lot.Unpark("DL-1234")
+	assert.Nil(t, err)
+	assert.Equal(t, *car, unparkedCar)
+}
