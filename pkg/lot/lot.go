@@ -19,3 +19,17 @@ func NewParkingLot(name string, cap int, vehicles map[string]ParkedVehicle) *Par
 		Vehicles: vehicles,
 	}
 }
+
+func (p *ParkingLot) Park(v vehicle.Vehicle) (bool,error){
+	if len(p.Vehicles) >= p.Capacity {
+		return false, errors.New("Sorry,Parking lot is full")
+	}
+	if _, exists := p.Vehicles[v.Plate]; exists {
+		return false, errors.New("trying to park already parked car")
+	}
+	p.Vehicles[v.Plate] = ParkedVehicle{
+		Vehicle:  v,
+		ParkedAt: time.Now(),
+	}
+	return true, nil
+}

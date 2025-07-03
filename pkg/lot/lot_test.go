@@ -23,3 +23,11 @@ func TestNewParkingLot(t *testing.T) {
 	assert.Equal(t, 5, lot.Capacity)
 	assert.NotNil(t, lot.Vehicles)
 }
+
+func TestParkCar_Success(t *testing.T) {
+	lot := NewParkingLot("B2", 2, make(map[string]ParkedVehicle))
+	car := vehicle.New("RJ-14-AB-6567", "White", "Wagonr", false, "small")
+	ok, err := lot.Park(*car)
+	assert.True(t, ok)
+	assert.Nil(t, err)
+}
