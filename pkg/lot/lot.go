@@ -42,3 +42,11 @@ func (p *ParkingLot) Unpark(plate string) (vehicle.Vehicle, error) {
 	delete(p.Vehicles, plate)
 	return parked.Vehicle, nil
 }
+
+func (p *ParkingLot) IsFull() bool {
+	return len(p.Vehicles) >= p.Capacity
+}
+
+func (p *ParkingLot) IsAvailable() bool {
+	return len(p.Vehicles) < p.Capacity
+}

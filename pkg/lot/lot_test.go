@@ -40,3 +40,16 @@ func TestUnparkCar_Success(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, *car, unparkedCar)
 }
+
+func TestIsFullAndIsAvailable(t *testing.T) {
+	lot := NewParkingLot("Lot A", 1, make(map[string]ParkedVehicle))
+	car := vehicle.New("DL-1234", "White", "BMW", false, "Small")
+
+	assert.True(t, lot.IsAvailable())
+	assert.False(t, lot.IsFull())
+
+	_, _ = lot.Park(*car)
+
+	assert.False(t, lot.IsAvailable())
+	assert.True(t, lot.IsFull())
+}
