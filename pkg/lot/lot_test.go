@@ -53,3 +53,11 @@ func TestIsFullAndIsAvailable(t *testing.T) {
 	assert.False(t, lot.IsAvailable())
 	assert.True(t, lot.IsFull())
 }
+
+func TestFreeSlots(t *testing.T) {
+	lot := NewParkingLot("Lot A", 2, make(map[string]ParkedVehicle))
+	assert.Equal(t, 2, lot.FreeSlots())
+	car := vehicle.New("DL-1234", "White", "BMW", false, "Small")
+	_, _ = lot.Park(*car)
+	assert.Equal(t, 1, lot.FreeSlots())
+}

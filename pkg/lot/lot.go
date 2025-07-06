@@ -50,3 +50,7 @@ func (p *ParkingLot) IsFull() bool {
 func (p *ParkingLot) IsAvailable() bool {
 	return len(p.Vehicles) < p.Capacity
 }
+
+func (p *ParkingLot) FreeSlots() int {
+	return p.Capacity - len(p.Vehicles)
+}
