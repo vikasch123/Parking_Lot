@@ -22,3 +22,10 @@ func TestFindCarByColor(t *testing.T) {
 	assert.Len(t, vehicles, 1)
 	assert.Equal(t, "DL-1001", vehicles[0].Plate)
 }
+
+func TestGetVehiclePlatesByColor(t *testing.T) {
+	service := setupTestPoliceService()
+	plates := service.GetVehiclePlatesByColor("white")
+	assert.Len(t, plates, 1)
+	assert.Contains(t, plates, "DL-1001")
+}

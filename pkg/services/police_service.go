@@ -28,3 +28,15 @@ func (p *PoliceService) FindCarByColor(color string) ([]vehicle.Vehicle, error) 
 	}
 	return result, nil
 }
+
+func (p *PoliceService) GetVehiclePlatesByColor(color string) []string {
+	var result []string
+	for _, lot := range p.attendant.Lots {
+		for _, pv := range lot.GetParkedVehicles() {
+			if strings.EqualFold(pv.Vehicle.Color, color) {
+				result = append(result, pv.Vehicle.Plate)
+			}
+		}
+	}
+	return result
+}
