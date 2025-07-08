@@ -40,3 +40,15 @@ func (p *PoliceService) GetVehiclePlatesByColor(color string) []string {
 	}
 	return result
 }
+
+// UC15: Find lot by vehicle number
+func (p *PoliceService) GetLotByVehicleNumber(number string) (string, bool) {
+	for _, v := range p.attendant.Lots {
+		for _, pv := range v.GetParkedVehicles() {
+			if strings.EqualFold(pv.Vehicle.Plate, number) {
+				return v.Name, true
+			}
+		}
+	}
+	return "", false
+}
