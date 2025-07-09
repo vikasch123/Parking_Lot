@@ -1,9 +1,14 @@
 package lot
 
-import "parking-lot/pkg/vehicle"
+import (
+	"errors"
+	"parking-lot/pkg/vehicle"
+	"time"
+)
 
 type ParkedVehicle struct {
-	Vehicle vehicle.Vehicle
+	Vehicle  vehicle.Vehicle
+	ParkedAt time.Time
 }
 
 type ParkingLot struct {
@@ -20,7 +25,7 @@ func NewParkingLot(name string, cap int, vehicles map[string]ParkedVehicle) *Par
 	}
 }
 
-func (p *ParkingLot) Park(v vehicle.Vehicle) (bool,error){
+func (p *ParkingLot) Park(v vehicle.Vehicle) (bool, error) {
 	if len(p.Vehicles) >= p.Capacity {
 		return false, errors.New("Sorry,Parking lot is full")
 	}
@@ -53,4 +58,12 @@ func (p *ParkingLot) IsAvailable() bool {
 
 func (p *ParkingLot) FreeSlots() int {
 	return p.Capacity - len(p.Vehicles)
+}
+
+func (p *ParkingLot) GetParkedVehicles() []ParkedVehicle {
+	var parked []ParkedVehicle
+	for _, v := range p.Vehicles {
+		parked = append(parked, v)
+	}
+	return parked
 }

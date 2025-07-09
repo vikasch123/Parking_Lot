@@ -1,0 +1,4 @@
+Lot,Plate,Make,Color,Size,IsHandicap,ParkedAt
+Lot A,DL-3333,WagonR,White,Small,true,2025-07-10 16:06:56
+Lot B,DL-2222,Audi,Black,Small,false,2025-07-10 16:06:56
+Lot B,DL-4444,Fortuner,Red,Large,false,2025-07-10 16:06:56

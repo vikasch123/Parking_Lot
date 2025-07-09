@@ -1,0 +1,6 @@
+mode: count
+parking-lot/pkg/utils/csv_export.go:9.76,11.16 2 9
+parking-lot/pkg/utils/csv_export.go:11.16,13.3 1 1
+parking-lot/pkg/utils/csv_export.go:14.2,20.46 4 8
+parking-lot/pkg/utils/csv_export.go:20.46,22.3 1 0
+parking-lot/pkg/utils/csv_export.go:25.2,25.30 1 8

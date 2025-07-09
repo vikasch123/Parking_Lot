@@ -1,7 +1,9 @@
 package lot
 
 import (
+	"parking-lot/pkg/vehicle"
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 

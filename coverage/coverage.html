@@ -1,0 +1,748 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>parking-lot: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">parking-lot/main.go (0.0%)</option>
+				
+				<option value="file1">parking-lot/pkg/attendant/attendant.go (50.0%)</option>
+				
+				<option value="file2">parking-lot/pkg/lot/lot.go (63.2%)</option>
+				
+				<option value="file3">parking-lot/pkg/services/costing_service.go (100.0%)</option>
+				
+				<option value="file4">parking-lot/pkg/services/police_export.go (86.1%)</option>
+				
+				<option value="file5">parking-lot/pkg/services/police_service.go (100.0%)</option>
+				
+				<option value="file6">parking-lot/pkg/services/pricing_service.go (100.0%)</option>
+				
+				<option value="file7">parking-lot/pkg/stratergy/stratergy.go (91.2%)</option>
+				
+				<option value="file8">parking-lot/pkg/utils/csv_export.go (88.9%)</option>
+				
+				<option value="file9">parking-lot/pkg/vehicle/vehicle.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "fmt"
+        "os"
+        "time"
+
+        "parking-lot/pkg/attendant"
+        "parking-lot/pkg/lot"
+        "parking-lot/pkg/services"
+        "parking-lot/pkg/stratergy"
+        "parking-lot/pkg/vehicle"
+)
+
+func main() <span class="cov0" title="0">{
+        fmt.Println("🚗 Parking Lot System Demo")
+        fmt.Println("=========================")
+
+        _ = os.MkdirAll("out", 0755)
+
+        // 1. Create Vehicles
+        cars := []*vehicle.Vehicle{
+                vehicle.New("DL-1111", "White", "BMW", false, "Small"),
+                vehicle.New("DL-2222", "Black", "Audi", false, "Small"),
+                vehicle.New("DL-3333", "White", "WagonR", true, "Small"),  // handicap
+                vehicle.New("DL-4444", "Red", "Fortuner", false, "Large"), // large
+                vehicle.New("DL-5555", "Blue", "Swift", false, "Small"),
+        }
+
+        // 2. Create Parking Lots
+        lotA := lot.NewParkingLot("Lot A", 2, make(map[string]lot.ParkedVehicle))
+        lotB := lot.NewParkingLot("Lot B", 2, make(map[string]lot.ParkedVehicle))
+        lots := []*lot.ParkingLot{lotA, lotB}
+
+        // 3. Create Attendant
+        att := attendant.NewAttendant("Ravi", lots)
+
+        // 4. Parking Strategies
+        evenStrat := &amp;stratergy.ParkEvenly{}
+        handicapStrat := &amp;stratergy.HandicapPark{}
+        largeStrat := &amp;stratergy.BigVehiclePark{}
+
+        // 5. Park Vehicles
+        fmt.Println("\nParking vehicles with different strategies:")
+        _, _ = att.ParkWithStrategy(*cars[0], evenStrat)
+        _, _ = att.ParkWithStrategy(*cars[1], evenStrat)
+        _, _ = att.ParkWithStrategy(*cars[2], handicapStrat)
+        _, _ = att.ParkWithStrategy(*cars[3], largeStrat)
+        _, _ = att.ParkWithStrategy(*cars[4], evenStrat)
+
+        // 6. Show Lot Status
+        fmt.Println("\nLot Status:")
+        for _, l := range lots </span><span class="cov0" title="0">{
+                fmt.Printf("%s: %d/%d occupied\n", l.Name, len(l.Vehicles), l.Capacity)
+        }</span>
+
+        // 7. Unpark a Vehicle
+        <span class="cov0" title="0">fmt.Println("\nUnparking DL-1111 from Lot A:")
+        unparked, err := lotA.Unpark("DL-1111")
+        if err == nil </span><span class="cov0" title="0">{
+                fmt.Printf("Unparked: %s (%s)\n", unparked.Plate, unparked.Make)
+        }</span> else<span class="cov0" title="0"> {
+                fmt.Println("Unpark error:", err)
+        }</span>
+
+        // 8. Pricing Service Demo
+        <span class="cov0" title="0">fmt.Println("\nPricing Service Demo:")
+        pricing := services.NewPricingService()
+        for _, l := range lots </span><span class="cov0" title="0">{
+                for _, pv := range l.GetParkedVehicles() </span><span class="cov0" title="0">{
+                        pv.ParkedAt = time.Now().Add(-1 * time.Hour)
+                        cost := pricing.CalculateCost(pv.Vehicle, pv.ParkedAt)
+                        fmt.Printf("%s (%s): ₹%.2f\n", pv.Vehicle.Plate, pv.Vehicle.Size, cost)
+                }</span>
+        }
+
+        // 9. Police Service Demo
+        <span class="cov0" title="0">fmt.Println("\nPolice Service Demo:")
+        police := services.NewPoliceService(att)
+        whiteCars, _ := police.FindCarByColor("White")
+        fmt.Println("White cars found:")
+        for _, v := range whiteCars </span><span class="cov0" title="0">{
+                fmt.Printf("  %s (%s)\n", v.Plate, v.Make)
+        }</span>
+        <span class="cov0" title="0">plates := police.GetVehiclePlatesByColor("White")
+        fmt.Println("White car plates:", plates)
+        lotName, found := police.GetLotByVehicleNumber("DL-3333")
+        if found </span><span class="cov0" title="0">{
+                fmt.Println("DL-3333 is parked in:", lotName)
+        }</span>
+        <span class="cov0" title="0">after := time.Now().Add(-1 * time.Minute)
+        recent := police.GetVehiclesParkedAfter(after)
+        fmt.Printf("Vehicles parked after %v:\n", after)
+        for _, v := range recent </span><span class="cov0" title="0">{
+                fmt.Printf("  %s (%s)\n", v.Plate, v.Make)
+        }</span>
+        <span class="cov0" title="0">fmt.Println("All parked vehicles summary:")
+        for _, entry := range police.GetAllParkedVehiclesSummary() </span><span class="cov0" title="0">{
+                fmt.Printf("  %s: %s (%s %s) in %s\n", entry["Plate"], entry["Make"], entry["Color"], entry["Size"], entry["Lot"])
+        }</span>
+
+        // 10. CSV Export Demo
+        <span class="cov0" title="0">fmt.Println("\nExporting police queries to CSV (see 'out/' folder):")
+        _ = police.ExportPlatesByColorToCSV("White", "out/white_plates.csv")
+        _ = police.ExportVehiclesByColorToCSV("White", "out/white_vehicles.csv")
+        _ = police.ExportVehiclesParkedAfterToCSV(after, "out/recent_vehicles.csv")
+        _ = police.ExportAllParkedVehiclesSummaryToCSV("out/all_vehicles_summary.csv")
+
+        fmt.Println("\n🎉 Demo complete! Check the 'out/' folder for CSV exports.")</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package attendant
+
+import (
+        "parking-lot/pkg/lot"
+        "parking-lot/pkg/stratergy"
+        "parking-lot/pkg/vehicle"
+)
+
+type Attendant struct {
+        Name string
+        Lots []*lot.ParkingLot
+}
+
+func NewAttendant(name string, lots []*lot.ParkingLot) *Attendant <span class="cov8" title="1">{
+        return &amp;Attendant{
+                Name: name,
+                Lots: lots,
+        }
+}</span>
+
+// ParkEvenly tries to park a vehicle using even distribution
+// Generic park method using a strategy..
+// ParkingStratergy - interface in stratergy.go
+// UC10   - attendant select strategy dynamically
+func (a *Attendant) ParkWithStrategy(v vehicle.Vehicle, s stratergy.ParkingStratergy) (*lot.ParkingLot, error) <span class="cov0" title="0">{
+        return s.Park(v, a.Lots)
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package lot
+
+import (
+        "errors"
+        "parking-lot/pkg/vehicle"
+        "time"
+)
+
+type ParkedVehicle struct {
+        Vehicle  vehicle.Vehicle
+        ParkedAt time.Time
+}
+
+type ParkingLot struct {
+        Name     string
+        Capacity int
+        Vehicles map[string]ParkedVehicle
+}
+
+func NewParkingLot(name string, cap int, vehicles map[string]ParkedVehicle) *ParkingLot <span class="cov10" title="5">{
+        return &amp;ParkingLot{
+                Name:     name,
+                Capacity: cap,
+                Vehicles: vehicles,
+        }
+}</span>
+
+func (p *ParkingLot) Park(v vehicle.Vehicle) (bool, error) <span class="cov8" title="4">{
+        if len(p.Vehicles) &gt;= p.Capacity </span><span class="cov0" title="0">{
+                return false, errors.New("Sorry,Parking lot is full")
+        }</span>
+        <span class="cov8" title="4">if _, exists := p.Vehicles[v.Plate]; exists </span><span class="cov0" title="0">{
+                return false, errors.New("trying to park already parked car")
+        }</span>
+        <span class="cov8" title="4">p.Vehicles[v.Plate] = ParkedVehicle{
+                Vehicle:  v,
+                ParkedAt: time.Now(),
+        }
+        return true, nil</span>
+}
+
+func (p *ParkingLot) Unpark(plate string) (vehicle.Vehicle, error) <span class="cov1" title="1">{
+        parked, exists := p.Vehicles[plate]
+        if !exists </span><span class="cov0" title="0">{
+                return vehicle.Vehicle{}, errors.New("vehicle not found")
+        }</span>
+        <span class="cov1" title="1">delete(p.Vehicles, plate)
+        return parked.Vehicle, nil</span>
+}
+
+func (p *ParkingLot) IsFull() bool <span class="cov4" title="2">{
+        return len(p.Vehicles) &gt;= p.Capacity
+}</span>
+
+func (p *ParkingLot) IsAvailable() bool <span class="cov4" title="2">{
+        return len(p.Vehicles) &lt; p.Capacity
+}</span>
+
+func (p *ParkingLot) FreeSlots() int <span class="cov4" title="2">{
+        return p.Capacity - len(p.Vehicles)
+}</span>
+
+func (p *ParkingLot) GetParkedVehicles() []ParkedVehicle <span class="cov0" title="0">{
+        var parked []ParkedVehicle
+        for _, v := range p.Vehicles </span><span class="cov0" title="0">{
+                parked = append(parked, v)
+        }</span>
+        <span class="cov0" title="0">return parked</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package services
+
+import (
+        // "parking-lot/pkg/attendant"
+        // "parking-lot/pkg/lot"
+        "parking-lot/pkg/vehicle"
+        "time"
+)
+
+type Payable interface {
+        CalculateAmountPayable(v vehicle.Vehicle, t time.Duration) float64
+}
+
+type SmallVehicleCalculator struct{}
+
+func (s *SmallVehicleCalculator) CalculateAmountPayable(v vehicle.Vehicle, t time.Duration) float64 <span class="cov10" title="3">{
+        hours := t.Hours()
+        return 30 * hours
+}</span>
+
+type LargeVehicleCalculator struct{}
+
+func (c *LargeVehicleCalculator) CalculateAmountPayable(v vehicle.Vehicle, duration time.Duration) float64 <span class="cov6" title="2">{
+        hours := duration.Hours()
+        return 50.0 * hours // ₹50/hour
+}</span>
+
+type HandicapVehicleCalculator struct{}
+
+func (c *HandicapVehicleCalculator) CalculateAmountPayable(v vehicle.Vehicle, duration time.Duration) float64 <span class="cov6" title="2">{
+        hours := duration.Hours()
+        return 5.0 * hours // discounted
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">//This file just exports all the fields queried by police service
+//Uses the pkg/utils/csv_export.go file for writing the output as a csv file
+
+package services
+
+import (
+        "fmt"
+        "parking-lot/pkg/utils"
+        "parking-lot/pkg/vehicle"
+        "time"
+)
+
+// ExportPlatesByColorToCSV fetches plates and exports them to a CSV
+
+func (p *PoliceService) ExportVehiclesByColorToCSV(color, filename string) []vehicle.Vehicle <span class="cov1" title="1">{
+        vehicles, _ := p.FindCarByColor(color)
+
+        if len(vehicles) == 0 </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov1" title="1">var rows [][]string
+
+        for _, v := range vehicles </span><span class="cov6" title="2">{
+                row := []string{
+                        v.Plate,
+                        v.Make,
+                        v.Color,
+                        v.Size,
+                        fmt.Sprintf("%v", v.IsHandicap),
+                }
+                rows = append(rows, row)
+        }</span>
+
+        <span class="cov1" title="1">header := []string{"Plate", "Make", "Color", "Size", "IsHandicap"}
+        err := utils.ExportToCSV(header, rows, filename)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+
+        <span class="cov1" title="1">return vehicles</span>
+
+}
+
+func (p *PoliceService) ExportPlatesByColorToCSV(color, filename string) error <span class="cov1" title="1">{
+        plates := p.GetVehiclePlatesByColor(color)
+
+        if len(plates) == 0 </span><span class="cov0" title="0">{
+                return fmt.Errorf("no vehicles found with color: %s", color)
+        }</span>
+
+        <span class="cov1" title="1">var rows [][]string
+        for _, plate := range plates </span><span class="cov6" title="2">{
+                rows = append(rows, []string{plate})
+        }</span>
+
+        <span class="cov1" title="1">headers := []string{"Plate Number"}
+        return utils.ExportToCSV(headers, rows, filename)</span>
+}
+
+func (p *PoliceService) ExportVehiclesParkedAfterToCSV(after time.Time, filename string) error <span class="cov1" title="1">{
+        vehicles := p.GetVehiclesParkedAfter(after)
+
+        if len(vehicles) == 0 </span><span class="cov0" title="0">{
+                return fmt.Errorf("no vehicles parked after %v", after)
+        }</span>
+
+        <span class="cov1" title="1">var rows [][]string
+        for _, v := range vehicles </span><span class="cov10" title="3">{
+                rows = append(rows, []string{
+                        v.Plate,
+                        v.Make,
+                        v.Color,
+                        v.Size,
+                        fmt.Sprintf("%v", v.IsHandicap),
+                })
+        }</span>
+
+        <span class="cov1" title="1">headers := []string{"Plate", "Make", "Color", "Size", "IsHandicap"}
+        return utils.ExportToCSV(headers, rows, filename)</span>
+}
+
+func (p *PoliceService) ExportAllParkedVehiclesSummaryToCSV(filename string) error <span class="cov1" title="1">{
+        data := p.GetAllParkedVehiclesSummary()
+
+        if len(data) == 0 </span><span class="cov0" title="0">{
+                return fmt.Errorf("no vehicles parked in any lot")
+        }</span>
+
+        <span class="cov1" title="1">headers := []string{"Lot", "Plate", "Make", "Color", "Size", "IsHandicap", "ParkedAt"}
+
+        var rows [][]string
+        for _, row := range data </span><span class="cov10" title="3">{
+                rows = append(rows, []string{
+                        row["Lot"],
+                        row["Plate"],
+                        row["Make"],
+                        row["Color"],
+                        row["Size"],
+                        row["IsHandicap"],
+                        row["ParkedAt"],
+                })
+        }</span>
+
+        <span class="cov1" title="1">return utils.ExportToCSV(headers, rows, filename)</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package services
+
+import (
+        "fmt"
+        "parking-lot/pkg/attendant"
+        "parking-lot/pkg/vehicle"
+        "strings"
+        "time"
+)
+
+type PoliceService struct {
+        attendant *attendant.Attendant
+}
+
+func NewPoliceService(att *attendant.Attendant) *PoliceService <span class="cov10" title="9">{
+        return &amp;PoliceService{
+                attendant: att,
+        }
+}</span>
+
+// UC13: Find cars by color
+func (p *PoliceService) FindCarByColor(color string) ([]vehicle.Vehicle, error) <span class="cov3" title="2">{
+        var result []vehicle.Vehicle
+        for _, l := range p.attendant.Lots </span><span class="cov6" title="4">{
+                for _, pv := range l.GetParkedVehicles() </span><span class="cov8" title="7">{
+                        if strings.EqualFold(pv.Vehicle.Color, color) </span><span class="cov6" title="4">{
+                                result = append(result, pv.Vehicle)
+                        }</span>
+                }
+        }
+        <span class="cov3" title="2">return result, nil</span>
+}
+
+func (p *PoliceService) GetVehiclePlatesByColor(color string) []string <span class="cov3" title="2">{
+        var result []string
+        for _, lot := range p.attendant.Lots </span><span class="cov6" title="4">{
+                for _, pv := range lot.GetParkedVehicles() </span><span class="cov8" title="7">{
+                        if strings.EqualFold(pv.Vehicle.Color, color) </span><span class="cov6" title="4">{
+                                result = append(result, pv.Vehicle.Plate)
+                        }</span>
+                }
+        }
+        <span class="cov3" title="2">return result</span>
+}
+
+// UC15: Find lot by vehicle number
+func (p *PoliceService) GetLotByVehicleNumber(number string) (string, bool) <span class="cov3" title="2">{
+        for _, v := range p.attendant.Lots </span><span class="cov6" title="4">{
+                for _, pv := range v.GetParkedVehicles() </span><span class="cov8" title="7">{
+                        if strings.EqualFold(pv.Vehicle.Plate, number) </span><span class="cov1" title="1">{
+                                return v.Name, true
+                        }</span>
+                }
+        }
+        <span class="cov1" title="1">return "", false</span>
+}
+
+// UC16: Get all vehicles parked after a certain time
+func (p *PoliceService) GetVehiclesParkedAfter(after time.Time) []vehicle.Vehicle <span class="cov3" title="2">{
+        var result []vehicle.Vehicle
+        for _, lot := range p.attendant.Lots </span><span class="cov6" title="4">{
+                for _, pv := range lot.GetParkedVehicles() </span><span class="cov8" title="7">{
+                        if pv.ParkedAt.After(after) </span><span class="cov7" title="5">{
+                                result = append(result, pv.Vehicle)
+                        }</span>
+                }
+        }
+        <span class="cov3" title="2">return result</span>
+}
+
+// UC 17 As a police officer, I want to see a summary of all parked vehicles in all lots.
+func (p *PoliceService) GetAllParkedVehiclesSummary() []map[string]string <span class="cov3" title="2">{
+        var result []map[string]string
+
+        for _, lot := range p.attendant.Lots </span><span class="cov6" title="4">{
+                for _, pv := range lot.GetParkedVehicles() </span><span class="cov8" title="7">{
+                        entry := map[string]string{
+                                "Lot":        lot.Name,
+                                "Plate":      pv.Vehicle.Plate,
+                                "Make":       pv.Vehicle.Make,
+                                "Color":      pv.Vehicle.Color,
+                                "Size":       pv.Vehicle.Size,
+                                "IsHandicap": fmt.Sprintf("%v", pv.Vehicle.IsHandicap),
+                                "ParkedAt":   pv.ParkedAt.Format("2006-01-02 15:04:05"),
+                        }
+                        result = append(result, entry)
+                }</span>
+        }
+
+        <span class="cov3" title="2">return result</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package services
+
+import (
+        "parking-lot/pkg/vehicle"
+        "time"
+)
+
+type PricingService struct {
+        calculators map[string]Payable
+}
+
+func NewPricingService() *PricingService <span class="cov10" title="4">{
+        return &amp;PricingService{
+                calculators: map[string]Payable{
+                        "Small":    &amp;SmallVehicleCalculator{},
+                        "Large":    &amp;LargeVehicleCalculator{},
+                        "Handicap": &amp;HandicapVehicleCalculator{},
+                },
+        }
+}</span>
+
+func (s *PricingService) CalculateCost(v vehicle.Vehicle, parkedAt time.Time) float64 <span class="cov10" title="4">{
+        duration := time.Since(parkedAt)
+
+        var key string
+        if v.IsHandicap </span><span class="cov1" title="1">{
+                key = "Handicap"
+        }</span> else<span class="cov8" title="3"> {
+                key = v.Size // "Small" or "Large"
+        }</span>
+
+        <span class="cov10" title="4">calculator, ok := s.calculators[key]
+        if !ok </span><span class="cov1" title="1">{
+                calculator = &amp;SmallVehicleCalculator{} // default
+        }</span>
+
+        <span class="cov10" title="4">return calculator.CalculateAmountPayable(v, duration)</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package stratergy
+
+import (
+        "errors"
+        "parking-lot/pkg/lot"
+        "parking-lot/pkg/vehicle"
+)
+
+// This is the interface for generic parking stratergy
+type ParkingStratergy interface {
+        Park(v vehicle.Vehicle, lots []*lot.ParkingLot) (*lot.ParkingLot, error)
+}
+
+type ParkEvenly struct{}
+
+func (p *ParkEvenly) Park(v vehicle.Vehicle, lots []*lot.ParkingLot) (*lot.ParkingLot, error) <span class="cov5" title="3">{
+        var targetLot *lot.ParkingLot
+        minCars := int(^uint(0) &gt;&gt; 1)
+
+        for _, l := range lots </span><span class="cov10" title="9">{
+                if l.IsFull() </span><span class="cov5" title="3">{
+                        continue</span>
+                }
+                <span class="cov8" title="6">if len(l.Vehicles) &lt; minCars </span><span class="cov5" title="3">{
+                        minCars = len(l.Vehicles)
+                        targetLot = l
+                }</span>
+        }
+
+        <span class="cov5" title="3">if targetLot == nil </span><span class="cov1" title="1">{
+                return nil, errors.New("all lots are full")
+        }</span>
+
+        <span class="cov3" title="2">_, err := targetLot.Park(v)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov3" title="2">return targetLot, nil</span>
+}
+
+type HandicapPark struct{}
+
+func (h *HandicapPark) Park(v vehicle.Vehicle, lots []*lot.ParkingLot) (*lot.ParkingLot, error) <span class="cov3" title="2">{
+        for _, l := range lots </span><span class="cov6" title="4">{
+                if !l.IsFull() </span><span class="cov1" title="1">{
+                        _, err := l.Park(v)
+                        if err != nil </span><span class="cov0" title="0">{
+                                return nil, err
+                        }</span>
+                        <span class="cov1" title="1">return l, nil</span>
+                }
+        }
+
+        <span class="cov1" title="1">return nil, errors.New("no space available for handicap drivers")</span>
+}
+
+type BigVehiclePark struct{}
+
+// Implements UC9.
+func (b *BigVehiclePark) Park(v vehicle.Vehicle, lots []*lot.ParkingLot) (*lot.ParkingLot, error) <span class="cov6" title="4">{
+        var targetLot *lot.ParkingLot
+        maxfree := -1
+        for _, l := range lots </span><span class="cov10" title="9">{
+                free := l.FreeSlots()
+                if free &gt; maxfree </span><span class="cov5" title="3">{
+                        maxfree = free
+                        targetLot = l
+                }</span>
+        }
+
+        <span class="cov6" title="4">if targetLot == nil || maxfree == 0 </span><span class="cov3" title="2">{
+                return nil, errors.New("no lot available for large vehicle")
+        }</span>
+
+        <span class="cov3" title="2">_, err := targetLot.Park(v)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov3" title="2">return targetLot, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package utils
+
+import (
+        "encoding/csv"
+        "os"
+)
+
+// ExportToCSV writes a list of rows (each row = slice of strings) to a CSV file with a header
+func ExportToCSV(headers []string, rows [][]string, filename string) error <span class="cov10" title="9">{
+        file, err := os.Create(filename)
+        if err != nil </span><span class="cov1" title="1">{
+                return err
+        }</span>
+        <span class="cov9" title="8">defer file.Close()
+
+        writer := csv.NewWriter(file)
+        defer writer.Flush()
+
+        // Write headers
+        if err := writer.Write(headers); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Write rows
+        <span class="cov9" title="8">return writer.WriteAll(rows)</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package vehicle
+
+type Vehicle struct {
+        Plate      string
+        Color      string
+        Make       string
+        IsHandicap bool
+        Size       string
+}
+
+func New(pl string, col string, make string, handicap bool, size string) *Vehicle <span class="cov8" title="1">{
+        return &amp;Vehicle{
+                Plate:      pl,
+                Color:      col,
+                Make:       make,
+                IsHandicap: handicap,
+                Size:       size,
+        }
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

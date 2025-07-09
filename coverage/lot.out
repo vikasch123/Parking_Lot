@@ -1,0 +1,16 @@
+mode: count
+parking-lot/pkg/lot/lot.go:20.89,26.2 1 5
+parking-lot/pkg/lot/lot.go:28.60,29.35 1 4
+parking-lot/pkg/lot/lot.go:29.35,31.3 1 0
+parking-lot/pkg/lot/lot.go:32.2,32.46 1 4
+parking-lot/pkg/lot/lot.go:32.46,34.3 1 0
+parking-lot/pkg/lot/lot.go:35.2,39.18 2 4
+parking-lot/pkg/lot/lot.go:42.68,44.13 2 1
+parking-lot/pkg/lot/lot.go:44.13,46.3 1 0
+parking-lot/pkg/lot/lot.go:47.2,48.28 2 1
+parking-lot/pkg/lot/lot.go:51.36,53.2 1 2
+parking-lot/pkg/lot/lot.go:55.41,57.2 1 2
+parking-lot/pkg/lot/lot.go:59.38,61.2 1 2
+parking-lot/pkg/lot/lot.go:63.58,65.31 2 0
+parking-lot/pkg/lot/lot.go:65.31,67.3 1 0
+parking-lot/pkg/lot/lot.go:68.2,68.15 1 0

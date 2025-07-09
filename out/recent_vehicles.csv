@@ -1,0 +1,4 @@
+Plate,Make,Color,Size,IsHandicap
+DL-3333,WagonR,White,Small,true
+DL-2222,Audi,Black,Small,false
+DL-4444,Fortuner,Red,Large,false
